@@ -71,7 +71,7 @@ export function LogInModal() {
         </DialogContent>
         <DialogActions>
           <Button onClick={closeHandler}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">login</Button>
         </DialogActions>
       </form>
     </Dialog>
