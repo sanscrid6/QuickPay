@@ -12,15 +12,16 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { loginFx } from '../../state/user';
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-  passwordAgain: z.string().min(6),
 });
 
 export function LogInModal() {
   const modal = useStore($modal);
+  const pending = useStore(loginFx.pending);
 
   const {
     register,
@@ -34,7 +35,12 @@ export function LogInModal() {
     closeModal();
   }
 
-  function submit(data: z.infer<typeof schema>) {}
+  async function submit(data: z.infer<typeof schema>) {
+    if (pending) return;
+
+    await loginFx(data);
+    closeModal();
+  }
 
   return (
     <Dialog open={modal === ModalType.LogIn} onClose={closeHandler}>

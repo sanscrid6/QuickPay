@@ -12,12 +12,16 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { registerFx } from '../../state/user';
 
 const schema = z
   .object({
     email: z.string().email(),
     password: z.string().min(6),
     passwordAgain: z.string().min(6),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    birthDate: z.string(),
   })
   .superRefine((val, ctx) => {
     if (val.password !== val.passwordAgain) {
@@ -31,6 +35,7 @@ const schema = z
 
 export function SignInModal() {
   const modal = useStore($modal);
+  const pending = useStore(registerFx.pending);
 
   const {
     register,
@@ -44,7 +49,12 @@ export function SignInModal() {
     closeModal();
   }
 
-  function submit(data: z.infer<typeof schema>) {}
+  async function submit(data: z.infer<typeof schema>) {
+    if (pending) return;
+
+    await registerFx(data);
+    closeModal();
+  }
 
   return (
     <Dialog open={modal === ModalType.SignIn} onClose={closeHandler}>
@@ -73,6 +83,22 @@ export function SignInModal() {
                 type: 'password',
                 label: 'Password again',
               },
+              {
+                name: 'firstName',
+                type: 'text',
+                label: 'First name',
+              },
+              {
+                name: 'lastName',
+                type: 'text',
+                label: 'Last name',
+              },
+              {
+                name: 'birthDate',
+                type: 'date',
+                label: 'Birth date',
+                autoFocus: true,
+              },
             ]}
             register={register}
             errors={errors}
@@ -80,7 +106,7 @@ export function SignInModal() {
         </DialogContent>
         <DialogActions>
           <Button onClick={closeHandler}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">Register</Button>
         </DialogActions>
       </form>
     </Dialog>

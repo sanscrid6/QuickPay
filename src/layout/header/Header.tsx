@@ -22,24 +22,33 @@ export const Header = forwardRef<HTMLElement | null>((_, ref) => {
     <header className={styles.container} ref={ref}>
       <nav className={styles.navigation}>
         {routes
-          .filter(({ path }) => path !== '/')
-          .map(({ path, name }) => (
-            <Link to={path} className={styles.link} key={name}>
-              <Typography
-                variant="h5"
-                component="div"
-                sx={{ paddingLeft: '0.5rem' }}
-              >
-                {name}
-              </Typography>
-            </Link>
-          ))}
+          .filter(({ path, isAuthed }) => isAuthed && path !== '/')
+          .map(({ path, name }) => {
+            if (!user) return null;
+
+            return (
+              <Link to={path} className={styles.link} key={name}>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{ paddingLeft: '0.5rem' }}
+                >
+                  {name}
+                </Typography>
+              </Link>
+            );
+          })}
       </nav>
       {!user && (
         <div className={styles.signContainer}>
           <Button onClick={logInHandler}>Log in</Button>
           <Button onClick={signInHandler}>Sign in</Button>
         </div>
+      )}
+      {user && (
+        <Typography variant="h6" component="div">
+          {user.firstName} {user.lastName}
+        </Typography>
       )}
     </header>
   );

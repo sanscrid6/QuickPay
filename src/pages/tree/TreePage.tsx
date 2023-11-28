@@ -1,7 +1,8 @@
 import { useStore } from 'effector-react';
-import { $tree, TreeNode } from '../../state/tree';
+import { $tree, TreeNode, loadTreeFx } from '../../state/tree';
 import styles from './tree-page.module.css';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
+import { useEffect } from 'react';
 
 function render(node: TreeNode) {
   if (node.children) {
@@ -18,6 +19,10 @@ function render(node: TreeNode) {
 export function TreePage() {
   const tree = useStore($tree);
 
+  useEffect(() => {
+    loadTreeFx();
+  }, []);
+
   function selectNodeHandler() {
     console.log('select');
   }
@@ -25,7 +30,7 @@ export function TreePage() {
   return (
     <main>
       <section className={styles.treeContainer}>
-        {tree && (
+        {tree?.children && (
           <TreeView onNodeSelect={selectNodeHandler}>
             {tree.children.map(render)}
           </TreeView>

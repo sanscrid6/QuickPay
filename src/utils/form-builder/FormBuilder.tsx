@@ -4,16 +4,17 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 type FormField = {
   name: string;
   label: string;
-  type?: 'text' | 'email' | 'password' | 'number';
+  type?: 'text' | 'email' | 'password' | 'number' | 'date';
+  autoFocus?: boolean;
 };
 
-type FormBuilderProps<T extends Record<string, string>> = {
+type FormBuilderProps<T extends Record<string, unknown>> = {
   fields: FormField[];
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
 };
 
-export function FormBuilder<T extends Record<string, string>>({
+export function FormBuilder<T extends Record<string, unknown>>({
   register,
   errors,
   fields,
@@ -25,7 +26,7 @@ export function FormBuilder<T extends Record<string, string>>({
           <TextField
             key={f.name}
             {...register(f.name as never)}
-            autoFocus
+            autoFocus={f.autoFocus}
             margin="dense"
             label={f.label}
             fullWidth

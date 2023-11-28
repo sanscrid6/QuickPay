@@ -7,11 +7,13 @@ export const routes = [
     path: '/tree',
     element: <TreePage />,
     name: 'Payment tree',
+    isAuthed: true,
   },
   {
     path: '/user',
     element: <UserPage />,
     name: 'User page',
+    isAuthed: true,
   },
   {
     path: '/',
