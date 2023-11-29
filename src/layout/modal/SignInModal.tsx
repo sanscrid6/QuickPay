@@ -12,7 +12,7 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { registerFx } from '../../state/user';
+import { loginFx, registerFx } from '../../state/user';
 
 const schema = z
   .object({
@@ -53,6 +53,7 @@ export function SignInModal() {
     if (pending) return;
 
     await registerFx(data);
+    await loginFx(data);
     closeModal();
   }
 

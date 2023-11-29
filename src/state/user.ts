@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getUser, login, register } from '../api/backend';
+import { getUser, getUserRaw, login, register } from '../api/backend';
 
 export type User = {
   id: string;
@@ -26,9 +26,10 @@ sample({
   target: $user,
 });
 
-loginFx.doneData.watch(({ accessToken, refreshToken }) => {
+loginFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('userId', userId);
 });
 
 sample({

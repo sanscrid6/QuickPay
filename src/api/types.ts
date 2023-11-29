@@ -31,13 +31,19 @@ export type UserResponse = {
   birthDate: string;
 };
 
-export type TreeNode = {
+export type ServiceNode = {
+  body: string;
+  description: string;
   id: string;
-  name: string;
-  type: 'FOLDER' | 'PAYMENT';
-  children?: TreeNode[];
+  title: string;
+  userId: string;
 };
 
-export type TreeResponse = {
-  children: TreeNode[];
+export type FolderNode = {
+  folders?: FolderNode[];
+  id: string;
+  title: string;
+  services: ServiceNode[];
 };
+
+export type TreeResponse = FolderNode[];

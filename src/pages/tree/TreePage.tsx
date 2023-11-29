@@ -1,21 +1,35 @@
 import { useStore } from 'effector-react';
-import { $tree, TreeNode, loadTreeFx } from '../../state/tree';
+import { $tree, Node, isFolderNode, loadTreeFx } from '../../state/tree';
 import styles from './tree-page.module.css';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
 import { useEffect } from 'react';
 import Service from './service/Service';
-import { $service } from '../../state/service';
+import { $service, setService } from '../../state/service';
 
-function render(node: TreeNode) {
-  if (node.children) {
+function render(node: Node) {
+  if (isFolderNode(node)) {
+    const result = [];
+
+    result.push(...(node.folders ?? []));
+    result.push(...(node.services ?? []));
+
     return (
-      <TreeItem nodeId={node.id} label={node.name} key={node.id}>
-        {node.children.map(render)}
+      <TreeItem nodeId={node.id} label={node.title} key={node.id}>
+        {result.map(render)}
       </TreeItem>
     );
+  } else {
+    return (
+      <TreeItem
+        nodeId={node.id}
+        label={node.title}
+        key={node.id}
+        onDoubleClick={() => {
+          setService(node);
+        }}
+      />
+    );
   }
-
-  return <TreeItem nodeId={node.id} label={node.name} key={node.id} />;
 }
 
 export function TreePage() {
@@ -26,18 +40,10 @@ export function TreePage() {
     loadTreeFx();
   }, []);
 
-  function selectNodeHandler() {
-    console.log('select');
-  }
-
   return (
     <main className={styles.container}>
       <section className={styles.treeContainer}>
-        {tree?.children && (
-          <TreeView onNodeSelect={selectNodeHandler}>
-            {tree.children.map(render)}
-          </TreeView>
-        )}
+        {tree && <TreeView>{tree.map(render)}</TreeView>}
       </section>
       <section className={styles.serviceContainer}>
         {service && <Service />}

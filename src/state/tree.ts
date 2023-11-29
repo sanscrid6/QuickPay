@@ -1,16 +1,28 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { getTree } from '../api/backend';
 
-export type TreeNode = {
+export type ServiceNode = {
+  body: string;
+  description: string;
   id: string;
-  name: string;
-  type: 'FOLDER' | 'PAYMENT';
-  children?: TreeNode[];
+  title: string;
+  userId: string;
 };
 
-export type Tree = {
-  children: TreeNode[];
+export type FolderNode = {
+  folders?: FolderNode[];
+  id: string;
+  title: string;
+  services?: ServiceNode[];
 };
+
+export type Tree = FolderNode[];
+
+export type Node = FolderNode | ServiceNode;
+
+export function isFolderNode(n: Node): n is FolderNode {
+  return 'folders' in n;
+}
 
 // const mockTree: Tree = {
 //   children: [

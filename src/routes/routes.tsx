@@ -1,5 +1,4 @@
 import { TreePage } from '../pages/tree/TreePage';
-import { UserPage } from '../pages/user/UserPage';
 import { MainPage } from '../pages/main/MainPage';
 
 export const routes = [
@@ -9,12 +8,12 @@ export const routes = [
     name: 'Payment tree',
     isAuthed: true,
   },
-  {
-    path: '/user',
-    element: <UserPage />,
-    name: 'User page',
-    isAuthed: true,
-  },
+  // {
+  //   path: '/user',
+  //   element: <UserPage />,
+  //   name: 'User page',
+  //   isAuthed: true,
+  // },
   {
     path: '/',
     element: <MainPage />,

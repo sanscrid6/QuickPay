@@ -14,7 +14,7 @@ type RequestError = {
   statusText: string;
 };
 
-async function requestWithCredentials<T>({
+export async function requestWithCredentials<T>({
   method,
   url,
   body,
