@@ -1,6 +1,12 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { getTree } from '../api/backend';
 
+export type Input = {
+  label: string;
+  name: string;
+  type: 'text' | 'data' | 'number';
+};
+
 export type ServiceNode = {
   body: string;
   description: string;

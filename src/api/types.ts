@@ -31,8 +31,13 @@ export type UserResponse = {
   birthDate: string;
 };
 
+export type Input = {
+  label: string;
+  type: 'text' | 'data' | 'number';
+};
+
 export type ServiceNode = {
-  body: string;
+  body: Input[];
   description: string;
   id: string;
   title: string;
