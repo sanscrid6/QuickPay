@@ -57,9 +57,9 @@ export async function refresh(data: RefreshTokenRequest) {
   return res!;
 }
 
-export async function request<T>(r: RequestData, depth = 0): Promise<T | null> {
+export async function request<T>(r: RequestData, depth = 0): Promise<T> {
   if (depth === 3) {
-    return null;
+    throw new Error('max depth reached');
   }
 
   try {
@@ -79,7 +79,7 @@ export async function request<T>(r: RequestData, depth = 0): Promise<T | null> {
       localStorage.setItem('accessToken', at);
       localStorage.setItem('refreshToken', rt);
 
-      return await requestWithCredentials<T>(r);
+      return await request<T>(r, depth);
     }
 
     throw e;

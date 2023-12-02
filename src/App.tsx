@@ -7,6 +7,8 @@ import { useHeight } from './hooks/useHeight';
 import { SignInModal } from './layout/modal/SignInModal';
 import { LogInModal } from './layout/modal/LogInModal';
 import { getUserFx } from './state/user';
+import { AddFolderModal } from './layout/modal/AddFolderModal';
+import { AddServiceModal } from './layout/modal/AddServiceModal';
 
 const theme = createTheme();
 
@@ -23,6 +25,8 @@ function App() {
       <Header ref={ref} />
       <SignInModal />
       <LogInModal />
+      <AddFolderModal />
+      <AddServiceModal />
       <div style={{ height: `calc(100% - ${height}px)` }}>
         <Router />
       </div>

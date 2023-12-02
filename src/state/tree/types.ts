@@ -1,7 +1,7 @@
 export type Input = {
   label: string;
   name: string;
-  type: 'text' | 'data' | 'number';
+  type: 'text' | 'date' | 'number';
 };
 
 export type ServiceNode = {

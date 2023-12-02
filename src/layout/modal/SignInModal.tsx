@@ -66,7 +66,7 @@ export function SignInModal() {
   }
 
   return (
-    <Dialog open={modal === ModalType.SignIn} onClose={closeHandler}>
+    <Dialog open={modal?.type === ModalType.SignIn} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
         <DialogTitle>Зарегистрироваться</DialogTitle>
         <DialogContent>

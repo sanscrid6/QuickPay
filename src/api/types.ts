@@ -52,3 +52,21 @@ export type FolderNode = {
 };
 
 export type TreeResponse = FolderNode[];
+
+export type AddFolderRequest = {
+  folderId: string;
+  title: string;
+  userId: string;
+};
+
+export type AddServiceRequest = {
+  description: string;
+  title: string;
+  userId: string;
+  body: string;
+};
+
+export type LinkServiceToFolderRequest = {
+  serviceId: string;
+  folderId: string;
+};

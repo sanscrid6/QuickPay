@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getTree } from '../../api/backend';
+import { addFolder, getTree } from '../../api/backend';
 import { logOut } from '../user';
 import { search } from './functions';
 import { Tree } from './types';
@@ -7,21 +7,35 @@ import { Tree } from './types';
 export const setTree = createEvent<Tree>();
 export const setTempTree = createEvent<Tree | null>();
 
+export const setEditMode = createEvent<boolean>();
 export const setSearch = createEvent<string>();
 export const setExpanded = createEvent<string[] | undefined>();
 
 export const $tempTree = createStore<Tree | null>(null);
 export const $tree = createStore<Tree | null>(null);
+
+export const $editMode = createStore(false);
 export const $search = createStore('');
 export const $expanded = createStore<string[] | undefined>(undefined, {
   skipVoid: false,
 });
 
 export const loadTreeFx = createEffect(getTree);
+export const addFolderFx = createEffect(addFolder);
+
+sample({
+  clock: setEditMode,
+  target: $editMode,
+});
 
 sample({
   clock: setExpanded,
   target: $expanded,
+});
+
+sample({
+  clock: addFolderFx.doneData,
+  target: loadTreeFx,
 });
 
 sample({

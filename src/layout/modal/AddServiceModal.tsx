@@ -12,16 +12,18 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { loginFx } from '../../state/user';
+import { $user, loginFx } from '../../state/user';
+import { addFolderFx } from '../../state/tree/tree';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  description: z.string().min(10),
+  title: z.string().min(3),
 });
 
-export function LogInModal() {
+export function AddServiceModal() {
   const modal = useUnit($modal);
   const pending = useUnit(loginFx.pending);
+  const user = useUnit($user);
 
   const {
     register,
@@ -38,28 +40,36 @@ export function LogInModal() {
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    await loginFx(data);
-    closeModal();
+    // const folder = z.object({ folderId: z.string() }).parse(modal?.data);
+
+    // await addFolderFx({
+    //   ...data,
+    //   ...folder,
+    //   userId: user!.id,
+    // });
+    // closeModal();
   }
 
   return (
-    <Dialog open={modal?.type === ModalType.LogIn} onClose={closeHandler}>
+    <Dialog open={modal?.type === ModalType.AddService} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Вход</DialogTitle>
+        <DialogTitle>Добавить попку</DialogTitle>
         <DialogContent>
-          <DialogContentText>Введите данные, чтобы войти</DialogContentText>
+          <DialogContentText>
+            Введите данные, чтобы добавить папку
+          </DialogContentText>
 
           <FormBuilder
             fields={[
               {
-                name: 'email',
-                type: 'email',
-                label: 'Эл. почта',
+                name: 'title',
+                type: 'text',
+                label: 'Название',
               },
               {
-                name: 'password',
-                type: 'password',
-                label: 'Пароль',
+                name: 'description',
+                type: 'text',
+                label: 'Описание',
               },
             ]}
             register={register}

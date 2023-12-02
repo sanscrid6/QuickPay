@@ -13,11 +13,11 @@ export const Header = forwardRef<HTMLElement | null>((_, ref) => {
   const navigate = useNavigate();
 
   function signInHandler() {
-    openModal(ModalType.SignIn);
+    openModal({ type: ModalType.SignIn });
   }
 
   function logInHandler() {
-    openModal(ModalType.LogIn);
+    openModal({ type: ModalType.LogIn });
   }
 
   function logOutHandler() {

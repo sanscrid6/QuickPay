@@ -6,16 +6,16 @@ import {
   setSearch,
 } from '../../state/tree/tree';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
-import { useEffect } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { $service, setService } from '../../state/service';
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, Menu, MenuItem, TextField } from '@mui/material';
 import { isFolderNode } from '../../state/tree/functions';
 import { Node } from '../../state/tree/types';
 
 import SearchIcon from '@mui/icons-material/Search';
 import Service from './service/Service';
-import AddIcon from '@mui/icons-material/Add';
 import styles from './tree-page.module.css';
+import { ModalType, openModal } from '../../state/modal';
 
 function RenderText({ text }: { text: string }) {
   const search = useUnit($search);
@@ -39,7 +39,13 @@ function RenderText({ text }: { text: string }) {
   );
 }
 
-function render(node: Node) {
+function RenderNode({
+  node,
+  onContextMenu,
+}: {
+  node: Node;
+  onContextMenu: (e: MouseEvent<HTMLElement>, data: unknown) => void;
+}) {
   if (isFolderNode(node)) {
     const result = [];
 
@@ -49,27 +55,28 @@ function render(node: Node) {
     return (
       <TreeItem
         nodeId={node.id}
+        ContentProps={{
+          onContextMenu: (e) => onContextMenu(e, { folderId: node.id }),
+        }}
         label={<RenderText text={node.title} />}
-        key={node.id}
       >
-        {result.map(render)}
-        <button className={styles.addButton}>
-          <AddIcon />
-        </button>
+        {result.map((n) => (
+          <RenderNode node={n} onContextMenu={onContextMenu} key={n.id} />
+        ))}
       </TreeItem>
     );
-  } else {
-    return (
-      <TreeItem
-        nodeId={node.id}
-        label={<RenderText text={node.title} />}
-        key={node.id}
-        onDoubleClick={() => {
-          setService(node);
-        }}
-      />
-    );
   }
+
+  return (
+    <TreeItem
+      nodeId={node.id}
+      label={<RenderText text={node.title} />}
+      // key={node.id}
+      onDoubleClick={() => {
+        setService(node);
+      }}
+    />
+  );
 }
 
 export function TreePage() {
@@ -77,14 +84,32 @@ export function TreePage() {
   const service = useUnit($service);
   const search = useUnit($search);
 
+  const [menuData, setMenuData] = useState<null | {
+    anchor: HTMLElement;
+    data?: unknown;
+  }>(null);
+
   useEffect(() => {
     loadTreeFx();
+  }, []);
+
+  const openContextMenuHandler = useCallback(
+    (e: MouseEvent<HTMLElement>, data?: unknown) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setMenuData({ anchor: e.currentTarget, data });
+    },
+    [],
+  );
+
+  const closeContextMenuHandler = useCallback(() => {
+    setMenuData(null);
   }, []);
 
   return (
     <main className={styles.container}>
       <section className={styles.treeContainer}>
-        <div className={styles.search}>
+        <div className={styles.controlsContainer}>
           <TextField
             id="input-with-icon-textfield"
             label="Поиск"
@@ -101,7 +126,33 @@ export function TreePage() {
             variant="standard"
           />
         </div>
-        {tree && <TreeView>{tree.map(render)}</TreeView>}
+        <Menu
+          id="basic-menu"
+          anchorEl={menuData?.anchor}
+          open={!!menuData}
+          onClose={closeContextMenuHandler}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={() => openModal({ type: ModalType.AddFolder })}>
+            Cоздать папку
+          </MenuItem>
+          <MenuItem onClick={() => openModal({ type: ModalType.AddService })}>
+            Создать услугу
+          </MenuItem>
+        </Menu>
+        {tree && (
+          <TreeView>
+            {tree.map((n) => (
+              <RenderNode
+                node={n}
+                onContextMenu={openContextMenuHandler}
+                key={n.id}
+              />
+            ))}
+          </TreeView>
+        )}
       </section>
       <section className={styles.serviceContainer}>
         {service && <Service />}

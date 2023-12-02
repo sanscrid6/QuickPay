@@ -4,6 +4,9 @@ import {
   LoginResponse,
   UserResponse,
   TreeResponse,
+  AddFolderRequest,
+  AddServiceRequest,
+  LinkServiceToFolderRequest,
 } from './types';
 import { request } from './utils';
 
@@ -40,5 +43,29 @@ export async function getTree() {
   return request<TreeResponse>({
     method: 'GET',
     url: '/Folders',
+  });
+}
+
+export async function addFolder(req: AddFolderRequest) {
+  return request({
+    method: 'POST',
+    url: '/Folders',
+    body: req,
+  });
+}
+
+export async function addService(req: AddServiceRequest) {
+  return request<{ serviceId: string }>({
+    method: 'POST',
+    url: '/services',
+    body: req,
+  });
+}
+
+export async function linkServiceToFolder(req: LinkServiceToFolderRequest) {
+  return request({
+    method: 'POST',
+    url: '/folderServices',
+    body: req,
   });
 }
