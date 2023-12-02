@@ -3,7 +3,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 type FormField = {
   name: string;
-  label: string;
+  label?: string;
   type?: 'text' | 'email' | 'password' | 'number' | 'date';
   autoFocus?: boolean;
 };

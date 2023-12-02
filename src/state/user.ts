@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getUser, getUserRaw, login, register } from '../api/backend';
+import { getUser, login, register } from '../api/backend';
 
 export type User = {
   id: string;
@@ -20,6 +20,20 @@ export const setUser = createEvent<User>();
 export const loginFx = createEffect(login);
 export const registerFx = createEffect(register);
 export const getUserFx = createEffect(getUser);
+
+export const logOut = createEvent();
+
+sample({
+  clock: logOut,
+  fn: () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
+
+    return null;
+  },
+  target: $user,
+});
 
 sample({
   clock: setUser,

@@ -28,7 +28,15 @@ const schema = z
       ctx.addIssue({
         path: ['passwordAgain'],
         code: z.ZodIssueCode.custom,
-        message: 'Passwords missmatch',
+        message: 'Пароли не совпадают',
+      });
+    }
+
+    if (new Date(val.birthDate).getTime() < Date.now()) {
+      ctx.addIssue({
+        path: ['birthDate'],
+        code: z.ZodIssueCode.custom,
+        message: 'Не корректная дата рождения',
       });
     }
   });
@@ -60,44 +68,40 @@ export function SignInModal() {
   return (
     <Dialog open={modal === ModalType.SignIn} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Зарегистрироваться</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText>Введите данные для регистрации</DialogContentText>
 
           <FormBuilder
             fields={[
               {
                 name: 'email',
                 type: 'email',
-                label: 'Email',
+                label: 'Эл. почта',
               },
               {
                 name: 'password',
                 type: 'password',
-                label: 'Password',
+                label: 'Пароль',
               },
               {
                 name: 'passwordAgain',
                 type: 'password',
-                label: 'Password again',
+                label: 'Пароль еще раз',
               },
               {
                 name: 'firstName',
                 type: 'text',
-                label: 'First name',
+                label: 'Имя',
               },
               {
                 name: 'lastName',
                 type: 'text',
-                label: 'Last name',
+                label: 'Фамилия',
               },
               {
                 name: 'birthDate',
                 type: 'date',
-                label: 'Birth date',
                 autoFocus: true,
               },
             ]}
@@ -106,8 +110,8 @@ export function SignInModal() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeHandler}>Cancel</Button>
-          <Button type="submit">Register</Button>
+          <Button onClick={closeHandler}>Отмена</Button>
+          <Button type="submit">Подтвердить</Button>
         </DialogActions>
       </form>
     </Dialog>

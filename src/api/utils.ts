@@ -48,7 +48,7 @@ export async function requestWithCredentials<T>({
 }
 
 export async function refresh(data: RefreshTokenRequest) {
-  const res = await request<LoginResponse>({
+  const res = await requestWithCredentials<LoginResponse>({
     method: 'POST',
     url: '/identity/refresh',
     params: data,

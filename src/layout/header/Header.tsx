@@ -1,14 +1,16 @@
-import styles from './header.module.css';
 import { routes } from '../../routes/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
-import { $user } from '../../state/user';
+import { $user, logOut } from '../../state/user';
 import { useStore } from 'effector-react';
 import { forwardRef } from 'react';
 import { ModalType, openModal } from '../../state/modal';
 
+import styles from './header.module.css';
+
 export const Header = forwardRef<HTMLElement | null>((_, ref) => {
   const user = useStore($user);
+  const navigate = useNavigate();
 
   function signInHandler() {
     openModal(ModalType.SignIn);
@@ -16,6 +18,11 @@ export const Header = forwardRef<HTMLElement | null>((_, ref) => {
 
   function logInHandler() {
     openModal(ModalType.LogIn);
+  }
+
+  function logOutHandler() {
+    logOut();
+    navigate('/');
   }
 
   return (
@@ -41,14 +48,17 @@ export const Header = forwardRef<HTMLElement | null>((_, ref) => {
       </nav>
       {!user && (
         <div className={styles.signContainer}>
-          <Button onClick={logInHandler}>Log in</Button>
-          <Button onClick={signInHandler}>Sign in</Button>
+          <Button onClick={logInHandler}>Войти</Button>
+          <Button onClick={signInHandler}>Зарегистрироваться</Button>
         </div>
       )}
       {user && (
-        <Typography variant="h6" component="div">
-          {user.firstName} {user.lastName}
-        </Typography>
+        <div className={styles.signContainer}>
+          <Typography variant="h6" component="div">
+            {user.firstName} {user.lastName}
+          </Typography>
+          <Button onClick={logOutHandler}>Выйти</Button>
+        </div>
       )}
     </header>
   );

@@ -1,5 +1,6 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { getTree } from '../api/backend';
+import { logOut } from './user';
 
 export type Input = {
   label: string;
@@ -79,5 +80,11 @@ sample({
 
 sample({
   clock: loadTreeFx.doneData,
+  target: $tree,
+});
+
+sample({
+  clock: logOut,
+  fn: () => null,
   target: $tree,
 });

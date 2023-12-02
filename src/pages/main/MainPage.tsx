@@ -7,7 +7,7 @@ export function MainPage() {
   return (
     <main className={styles.container}>
       <Typography variant="h2" component="div">
-        Easy payments with QuickPay
+        Быстрые платежи с QuickPay
       </Typography>
     </main>
   );

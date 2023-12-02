@@ -1,27 +1,12 @@
 import { Typography, Stack, Button, TextField } from '@mui/material';
-import { FormBuilder } from '../../../utils/form-builder/FormBuilder';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
-import styles from './service.module.css';
 import { useStore } from 'effector-react';
 import { $service, setService } from '../../../state/service';
-import CloseIcon from '@mui/icons-material/Close';
 import { Input } from '../../../state/tree';
 import { useEffect } from 'react';
 
-const f = [
-  {
-    type: 'text',
-    label: 'Email',
-    name: 'email',
-  },
-  {
-    type: 'text',
-    label: 'Password',
-    name: 'password',
-  },
-];
+import CloseIcon from '@mui/icons-material/Close';
+import styles from './service.module.css';
 
 function Service() {
   const service = useStore($service);
@@ -49,12 +34,7 @@ function Service() {
   return (
     <div className={styles.container}>
       <CloseIcon className={styles.closeIcon} onClick={closeHandler} />
-      <Stack
-        spacing={2}
-        style={{
-          maxWidth: '80%',
-        }}
-      >
+      <Stack spacing={2} className={styles.stack}>
         <Typography variant="h4" component="div">
           {service?.title}
         </Typography>
@@ -76,12 +56,8 @@ function Service() {
               helperText={errors[f.name]?.message as never}
             />
           ))}
-          <Button
-            type="submit"
-            className={styles.submit}
-            style={{ marginTop: '1rem' }}
-          >
-            continue
+          <Button type="submit" className={styles.submit}>
+            Продолжить
           </Button>
         </form>
       </Stack>

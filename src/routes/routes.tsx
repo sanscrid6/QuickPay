@@ -5,7 +5,7 @@ export const routes = [
   {
     path: '/tree',
     element: <TreePage />,
-    name: 'Payment tree',
+    name: 'Дерево услуг',
     isAuthed: true,
   },
   // {

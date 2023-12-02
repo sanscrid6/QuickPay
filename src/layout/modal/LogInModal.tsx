@@ -45,24 +45,21 @@ export function LogInModal() {
   return (
     <Dialog open={modal === ModalType.LogIn} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Вход</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText>Введите данные, чтобы войти</DialogContentText>
 
           <FormBuilder
             fields={[
               {
                 name: 'email',
                 type: 'email',
-                label: 'Email',
+                label: 'Эл. почта',
               },
               {
                 name: 'password',
                 type: 'password',
-                label: 'Password',
+                label: 'Пароль',
               },
             ]}
             register={register}
@@ -70,8 +67,8 @@ export function LogInModal() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeHandler}>Cancel</Button>
-          <Button type="submit">login</Button>
+          <Button onClick={closeHandler}>Отмена</Button>
+          <Button type="submit">Подтвердить</Button>
         </DialogActions>
       </form>
     </Dialog>

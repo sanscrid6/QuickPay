@@ -11,9 +11,15 @@
     float: right;
     margin-right: 5rem;
     margin-bottom: 3rem;
+    cursor: pointer;
 }
 
 .submit {
     width: 100%;
+    margin-top: 1rem;
+}
+
+.stack {
+    max-width: 80%;
 }
 

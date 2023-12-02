@@ -37,7 +37,7 @@ export type Input = {
 };
 
 export type ServiceNode = {
-  body: Input[];
+  body: string;
   description: string;
   id: string;
   title: string;
