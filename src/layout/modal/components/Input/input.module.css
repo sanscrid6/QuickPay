@@ -1,0 +1,18 @@
+.container {
+    margin-top: 1rem;
+    min-width: 40rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 2rem;
+}
+
+
+.select {
+    min-width: 8rem;
+}
+
+.icon {
+    cursor: pointer;
+}

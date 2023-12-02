@@ -14,16 +14,26 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { $user, loginFx } from '../../state/user';
 import { addFolderFx } from '../../state/tree/tree';
+import { useState } from 'react';
+import { Input } from '../../state/tree/types';
+import InputForm from './components/Input/InputForm';
+import { addServiceFx } from '../../state/service';
 
 const schema = z.object({
   description: z.string().min(10),
   title: z.string().min(3),
 });
 
+type FormInput = Input & {
+  id: string;
+};
+
 export function AddServiceModal() {
   const modal = useUnit($modal);
-  const pending = useUnit(loginFx.pending);
+  const pending = useUnit(addServiceFx.pending);
   const user = useUnit($user);
+
+  const [inputs, setInputs] = useState<FormInput[]>([]);
 
   const {
     register,
@@ -37,26 +47,60 @@ export function AddServiceModal() {
     closeModal();
   }
 
+  function addInput() {
+    setInputs((prev) => [
+      ...prev,
+      {
+        id: window.crypto.randomUUID(),
+        name: '',
+        label: '',
+        type: 'text',
+      },
+    ]);
+  }
+
+  function changeInput(id: string) {
+    return (data: Partial<Input>) =>
+      setInputs((prev) => {
+        const inputIndex = prev.findIndex((i) => i.id === id);
+        prev[inputIndex] = { ...prev[inputIndex], ...data };
+
+        return [...prev];
+      });
+  }
+
+  function deleteInput(id: string) {
+    return () => setInputs((prev) => prev.filter((i) => i.id !== id));
+  }
+
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    // const folder = z.object({ folderId: z.string() }).parse(modal?.data);
+    const folder = z.object({ folderId: z.string() }).parse(modal?.data);
+    console.log(folder);
 
-    // await addFolderFx({
-    //   ...data,
-    //   ...folder,
-    //   userId: user!.id,
-    // });
-    // closeModal();
+    await addServiceFx({
+      ...data,
+      ...folder,
+      body: JSON.stringify(
+        inputs.map((i) => ({ type: i.type, label: i.label, name: i.name })),
+      ),
+      userId: user!.id,
+    });
+    closeModal();
   }
 
   return (
-    <Dialog open={modal?.type === ModalType.AddService} onClose={closeHandler}>
+    <Dialog
+      open={modal?.type === ModalType.AddService}
+      onClose={closeHandler}
+      maxWidth="lg"
+    >
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Добавить попку</DialogTitle>
+        <DialogTitle>Добавить услугу</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Введите данные, чтобы добавить папку
+            Введите данные, чтобы добавить услугу
           </DialogContentText>
 
           <FormBuilder
@@ -75,6 +119,20 @@ export function AddServiceModal() {
             register={register}
             errors={errors}
           />
+
+          {inputs.map(({ label, type, name, id }) => (
+            <InputForm
+              key={id}
+              label={label}
+              name={name}
+              type={type}
+              deleteInput={deleteInput(id)}
+              changeInput={changeInput(id)}
+            />
+          ))}
+          <Button onClick={addInput} sx={{ marginTop: '1rem' }}>
+            Добавить поля ввода
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeHandler}>Отмена</Button>

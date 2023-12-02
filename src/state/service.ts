@@ -14,8 +14,8 @@ export const $service = createStore<Service | null>(null);
 export const setService = createEvent<Service | null>();
 
 export const addServiceFx = createEffect(async (info: AddService) => {
-  const { serviceId } = await addService(info);
-  await linkServiceToFolder({ serviceId, folderId: info.folderId });
+  const { id } = await addService(info);
+  await linkServiceToFolder({ serviceId: id, folderId: info.folderId });
 });
 
 sample({

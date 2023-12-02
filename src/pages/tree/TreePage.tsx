@@ -135,10 +135,18 @@ export function TreePage() {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={() => openModal({ type: ModalType.AddFolder })}>
+          <MenuItem
+            onClick={() =>
+              openModal({ type: ModalType.AddFolder, data: menuData?.data })
+            }
+          >
             Cоздать папку
           </MenuItem>
-          <MenuItem onClick={() => openModal({ type: ModalType.AddService })}>
+          <MenuItem
+            onClick={() =>
+              openModal({ type: ModalType.AddService, data: menuData?.data })
+            }
+          >
             Создать услугу
           </MenuItem>
         </Menu>

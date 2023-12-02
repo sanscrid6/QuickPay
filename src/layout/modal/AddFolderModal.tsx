@@ -12,7 +12,7 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user, loginFx } from '../../state/user';
+import { $user } from '../../state/user';
 import { addFolderFx } from '../../state/tree/tree';
 
 const schema = z.object({
@@ -22,7 +22,7 @@ const schema = z.object({
 
 export function AddFolderModal() {
   const modal = useUnit($modal);
-  const pending = useUnit(loginFx.pending);
+  const pending = useUnit(addFolderFx.pending);
   const user = useUnit($user);
 
   const {

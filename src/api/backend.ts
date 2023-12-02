@@ -55,7 +55,7 @@ export async function addFolder(req: AddFolderRequest) {
 }
 
 export async function addService(req: AddServiceRequest) {
-  return request<{ serviceId: string }>({
+  return request<{ id: string }>({
     method: 'POST',
     url: '/services',
     body: req,
