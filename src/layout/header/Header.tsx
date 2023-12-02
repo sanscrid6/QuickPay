@@ -2,14 +2,14 @@ import { routes } from '../../routes/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { $user, logOut } from '../../state/user';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { forwardRef } from 'react';
 import { ModalType, openModal } from '../../state/modal';
 
 import styles from './header.module.css';
 
 export const Header = forwardRef<HTMLElement | null>((_, ref) => {
-  const user = useStore($user);
+  const user = useUnit($user);
   const navigate = useNavigate();
 
   function signInHandler() {

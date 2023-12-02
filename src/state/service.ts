@@ -1,5 +1,5 @@
 import { createEvent, createStore, sample } from 'effector';
-import { ServiceNode } from './tree';
+import { ServiceNode } from './tree/types';
 import { logOut } from './user';
 
 type Service = ServiceNode;

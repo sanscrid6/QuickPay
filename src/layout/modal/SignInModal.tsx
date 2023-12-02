@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { $modal, ModalType, closeModal } from '../../state/modal';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -42,8 +42,8 @@ const schema = z
   });
 
 export function SignInModal() {
-  const modal = useStore($modal);
-  const pending = useStore(registerFx.pending);
+  const modal = useUnit($modal);
+  const pending = useUnit(registerFx.pending);
 
   const {
     register,

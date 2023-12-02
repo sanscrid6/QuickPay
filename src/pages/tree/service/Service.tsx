@@ -1,15 +1,15 @@
 import { Typography, Stack, Button, TextField } from '@mui/material';
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { $service, setService } from '../../../state/service';
-import { Input } from '../../../state/tree';
 import { useEffect } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './service.module.css';
+import { Input } from '../../../state/tree/types';
 
 function Service() {
-  const service = useStore($service);
+  const service = useUnit($service);
 
   const {
     control,

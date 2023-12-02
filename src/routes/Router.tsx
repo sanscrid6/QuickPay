@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import { routes } from './routes';
-import { useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { $user } from '../state/user';
 
 export function Router() {
-  const user = useStore($user);
+  const user = useUnit($user);
 
   return (
     <Routes>

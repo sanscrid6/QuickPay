@@ -18,3 +18,25 @@
     padding-left: 3rem;
     width: 100%;
 }
+
+.addButton {
+    border: none;
+    /* background-color: rgb(215, 215, 215); */
+    cursor: pointer;
+    padding-left: 23px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+}
+
+.search {
+    padding: 0px 23px;
+    margin-bottom: 1rem;
+    /* border: none; */
+    /* padding: 10px; */
+}
+
+.selectedText {
+    color: goldenrod;
+}
