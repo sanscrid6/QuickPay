@@ -32,7 +32,7 @@ const schema = z
       });
     }
 
-    if (new Date(val.birthDate).getTime() < Date.now()) {
+    if (new Date(val.birthDate).getTime() > Date.now()) {
       ctx.addIssue({
         path: ['birthDate'],
         code: z.ZodIssueCode.custom,

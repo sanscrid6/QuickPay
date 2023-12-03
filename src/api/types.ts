@@ -11,6 +11,10 @@ export type LoginRequest = {
   password: string;
 };
 
+export type LoginByCodeRequest = {
+  code: string;
+};
+
 export type RefreshTokenRequest = {
   accessToken: string;
   refreshToken: string;

@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getUser, login, register } from '../api/backend';
+import { getUser, login, loginByCode, register } from '../api/backend';
 
 export type User = {
   id: string;
@@ -18,6 +18,7 @@ export const $user = createStore<User | null>(null);
 export const setUser = createEvent<User>();
 
 export const loginFx = createEffect(login);
+export const loginByCodeFx = createEffect(loginByCode);
 export const registerFx = createEffect(register);
 export const getUserFx = createEffect(getUser);
 
@@ -40,14 +41,14 @@ sample({
   target: $user,
 });
 
-loginFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
+loginByCodeFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('userId', userId);
 });
 
 sample({
-  clock: loginFx.doneData,
+  clock: loginByCodeFx.doneData,
   fn: ({ userId }) => {
     return userId;
   },

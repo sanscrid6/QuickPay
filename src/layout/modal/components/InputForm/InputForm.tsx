@@ -5,13 +5,12 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-  Stack,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { PickDeep, ValueOf } from 'type-fest';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Input } from '../../../../state/tree/types';
-import styles from './input.module.css';
+import DeleteIcon from '@mui/icons-material/Delete';
+import styles from './input-form.module.css';
 
 const types = [
   {

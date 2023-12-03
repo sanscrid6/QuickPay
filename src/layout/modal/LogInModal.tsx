@@ -12,34 +12,68 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { loginFx } from '../../state/user';
+import { loginByCodeFx, loginFx } from '../../state/user';
+import { useState } from 'react';
 
-const schema = z.object({
+const schemaCredentials = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
 
+const schemaCode = z.object({
+  code: z.string(),
+});
+
+type Step =
+  | {
+      type: 'CREDENTIALS';
+      schema: typeof schemaCredentials;
+    }
+  | {
+      type: 'CODE';
+      schema: typeof schemaCode;
+    };
+
 export function LogInModal() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [step, setStep] = useState<Step>({
+    type: 'CREDENTIALS',
+    schema: schemaCredentials,
+  });
   const modal = useUnit($modal);
-  const pending = useUnit(loginFx.pending);
 
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
+  } = useForm<z.infer<typeof step.schema>>({
+    resolver: zodResolver(step.schema),
+  });
 
   function closeHandler() {
-    reset();
     closeModal();
+    setStep({
+      type: 'CREDENTIALS',
+      schema: schemaCredentials,
+    });
+    reset();
   }
 
-  async function submit(data: z.infer<typeof schema>) {
-    if (pending) return;
+  async function submit(data: z.infer<typeof step.schema>) {
+    if (step.type === 'CREDENTIALS') {
+      const d = data as z.infer<typeof schemaCredentials>;
 
-    await loginFx(data);
-    closeModal();
+      await loginFx(d);
+      setStep({
+        type: 'CODE',
+        schema: schemaCode,
+      });
+    } else {
+      const d = data as z.infer<typeof schemaCode>;
+      await loginByCodeFx(d);
+      closeHandler();
+    }
   }
 
   return (
@@ -49,22 +83,37 @@ export function LogInModal() {
         <DialogContent>
           <DialogContentText>Введите данные, чтобы войти</DialogContentText>
 
-          <FormBuilder
-            fields={[
-              {
-                name: 'email',
-                type: 'email',
-                label: 'Эл. почта',
-              },
-              {
-                name: 'password',
-                type: 'password',
-                label: 'Пароль',
-              },
-            ]}
-            register={register}
-            errors={errors}
-          />
+          {step.type === 'CREDENTIALS' && (
+            <FormBuilder
+              fields={[
+                {
+                  name: 'email',
+                  type: 'email',
+                  label: 'Эл. почта',
+                },
+                {
+                  name: 'password',
+                  type: 'password',
+                  label: 'Пароль',
+                },
+              ]}
+              register={register}
+              errors={errors}
+            />
+          )}
+          {step.type === 'CODE' && (
+            <FormBuilder
+              fields={[
+                {
+                  name: 'code',
+                  type: 'text',
+                  label: 'Код',
+                },
+              ]}
+              register={register}
+              errors={errors}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={closeHandler}>Отмена</Button>

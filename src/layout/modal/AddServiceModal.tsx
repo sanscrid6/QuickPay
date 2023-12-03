@@ -12,12 +12,11 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user, loginFx } from '../../state/user';
-import { addFolderFx } from '../../state/tree/tree';
+import { $user } from '../../state/user';
 import { useState } from 'react';
 import { Input } from '../../state/tree/types';
-import InputForm from './components/Input/InputForm';
-import { addServiceFx } from '../../state/service';
+import InputForm from './components/InputForm/InputForm';
+import { addServiceFx } from '../../state/service/service';
 
 const schema = z.object({
   description: z.string().min(10),

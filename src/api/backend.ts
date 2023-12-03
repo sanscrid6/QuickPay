@@ -7,6 +7,7 @@ import {
   AddFolderRequest,
   AddServiceRequest,
   LinkServiceToFolderRequest,
+  LoginByCodeRequest,
 } from './types';
 import { request } from './utils';
 
@@ -21,9 +22,19 @@ export async function register(data: RegisterRequest) {
 }
 
 export async function login(data: LoginRequest) {
+  const res = await request({
+    method: 'POST',
+    url: '/identity/signin1',
+    params: data,
+  });
+
+  return res!;
+}
+
+export async function loginByCode(data: LoginByCodeRequest) {
   const res = await request<LoginResponse>({
     method: 'POST',
-    url: '/identity/signin',
+    url: '/identity/signin2',
     params: data,
   });
 
@@ -67,5 +78,12 @@ export async function linkServiceToFolder(req: LinkServiceToFolderRequest) {
     method: 'POST',
     url: '/folderServices',
     body: req,
+  });
+}
+
+export async function getAllServices() {
+  return request({
+    method: 'GET',
+    url: '/folderServices',
   });
 }

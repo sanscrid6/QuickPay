@@ -7,7 +7,7 @@ import {
 } from '../../state/tree/tree';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
 import { MouseEvent, useCallback, useEffect, useState } from 'react';
-import { $service, setService } from '../../state/service';
+import { $service, setService } from '../../state/service/service';
 import { InputAdornment, Menu, MenuItem, TextField } from '@mui/material';
 import { isFolderNode } from '../../state/tree/functions';
 import { Node } from '../../state/tree/types';
