@@ -1,0 +1,13 @@
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    min-width: 30rem;
+
+}
+
+.container {
+    padding: 1rem 1rem;
+    display: flex;
+    column-gap: 1rem;
+}

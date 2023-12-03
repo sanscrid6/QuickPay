@@ -1,5 +1,7 @@
 import { TreePage } from '../pages/tree/TreePage';
 import { MainPage } from '../pages/main/MainPage';
+import ServicesPage from '../pages/services/Services';
+import { WalletPage } from '../pages/wallet/WaletPage';
 
 export const routes = [
   {
@@ -8,17 +10,21 @@ export const routes = [
     name: 'Дерево услуг',
     isAuthed: true,
   },
-  // {
-  //   path: '/user',
-  //   element: <UserPage />,
-  //   name: 'User page',
-  //   isAuthed: true,
-  // },
+  {
+    path: '/services',
+    element: <ServicesPage />,
+    name: 'Услуги',
+    isAuthed: true,
+  },
+  {
+    path: '/wallets',
+    element: <WalletPage />,
+    name: 'Кошельки',
+    isAuthed: true,
+  },
   {
     path: '/',
     element: <MainPage />,
     name: 'Main page',
   },
 ];
-
-// export const router = createBrowserRouter(routes);

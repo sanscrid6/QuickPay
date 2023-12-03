@@ -1,12 +1,12 @@
 import { Typography, Stack, Button, TextField } from '@mui/material';
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import { useUnit } from 'effector-react';
-import { $service, setService } from '../../../state/service/service';
+import { $service, setService } from '../../state/service/service';
 import { useEffect } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './service.module.css';
-import { Input } from '../../../state/tree/types';
+import { Input } from '../../state/tree/types';
 
 function Service() {
   const service = useUnit($service);
@@ -30,6 +30,8 @@ function Service() {
   function closeHandler() {
     setService(null);
   }
+
+  if (!service) return null;
 
   return (
     <div className={styles.container}>

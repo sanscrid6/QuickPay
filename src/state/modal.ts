@@ -5,6 +5,9 @@ export enum ModalType {
   LogIn = 'LOGIN',
   AddFolder = 'ADDFOLDER',
   AddService = 'ADDSERVICE',
+  AddWallet = 'WALLET',
+  AddMoney = 'ADDMONEY',
+  LinkServiceToFolder = 'LINK',
 }
 
 export const $modal = createStore<{ type: ModalType; data?: unknown } | null>(

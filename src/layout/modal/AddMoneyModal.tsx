@@ -12,17 +12,16 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user } from '../../state/user';
-import { addFolderFx } from '../../state/tree/tree';
+import { $walletList, updateWalletFx } from '../../state/user';
 
 const schema = z.object({
-  title: z.string().min(3),
+  amount: z.string(),
 });
 
-export function AddFolderModal() {
+export function AddMoneyModal() {
   const modal = useUnit($modal);
-  const pending = useUnit(addFolderFx.pending);
-  const user = useUnit($user);
+  const pending = useUnit(updateWalletFx.pending);
+  const wallets = useUnit($walletList);
 
   const {
     register,
@@ -39,31 +38,36 @@ export function AddFolderModal() {
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    const folder = z.object({ folderId: z.string() }).parse(modal?.data);
+    const { id } = z.object({ id: z.string() }).parse(modal?.data);
+    const wallet = wallets.find((w) => w.id === id);
 
-    await addFolderFx({
-      ...data,
-      ...folder,
-      userId: user!.id,
+    if (!wallet) {
+      throw new Error(`cant find wallet with id ${id}`);
+    }
+
+    await updateWalletFx({
+      ...wallet,
+      amount: +data.amount + wallet.amount,
+      id,
     });
     closeHandler();
   }
 
   return (
-    <Dialog open={modal?.type === ModalType.AddFolder} onClose={closeHandler}>
+    <Dialog open={modal?.type === ModalType.AddMoney} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Добавить попку</DialogTitle>
+        <DialogTitle>Пополнить кошелек</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Введите данные, чтобы добавить папку
+            Введите сумму в BYN, чтобы пополнить кошелек
           </DialogContentText>
 
           <FormBuilder
             fields={[
               {
-                name: 'title',
-                type: 'text',
-                label: 'Название',
+                name: 'amount',
+                type: 'number',
+                label: 'Сумма',
               },
             ]}
             register={register}

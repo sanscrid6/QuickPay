@@ -5,8 +5,8 @@ const base = 'http://localhost:81/api';
 type RequestData = {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   url: string;
-  body?: Record<string, string>;
-  params?: Record<string, string>;
+  body?: Record<string, string | number>;
+  params?: Record<string, string | number>;
 };
 
 type RequestError = {
@@ -23,7 +23,7 @@ export async function requestWithCredentials<T>({
   const u = new URL(base + url);
   const token = localStorage.getItem('accessToken');
   for (const [key, value] of Object.entries(params ?? {})) {
-    u.searchParams.set(key, value);
+    u.searchParams.set(key, value.toString());
   }
 
   const res = await fetch(u.toString(), {

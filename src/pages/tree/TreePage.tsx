@@ -7,15 +7,15 @@ import {
 } from '../../state/tree/tree';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
 import { MouseEvent, useCallback, useEffect, useState } from 'react';
-import { $service, setService } from '../../state/service/service';
+import { setService } from '../../state/service/service';
 import { InputAdornment, Menu, MenuItem, TextField } from '@mui/material';
 import { isFolderNode } from '../../state/tree/functions';
 import { Node } from '../../state/tree/types';
 
 import SearchIcon from '@mui/icons-material/Search';
-import Service from './service/Service';
+import Service from '../../components/service/Service';
 import styles from './tree-page.module.css';
-import { ModalType, openModal } from '../../state/modal';
+import { ModalType, closeModal, openModal } from '../../state/modal';
 
 function RenderText({ text }: { text: string }) {
   const search = useUnit($search);
@@ -81,7 +81,6 @@ function RenderNode({
 
 export function TreePage() {
   const tree = useUnit($tempTree);
-  const service = useUnit($service);
   const search = useUnit($search);
 
   const [menuData, setMenuData] = useState<null | {
@@ -91,6 +90,12 @@ export function TreePage() {
 
   useEffect(() => {
     loadTreeFx();
+  }, []);
+
+  useEffect(() => {
+    closeModal.watch(() => {
+      setMenuData(null);
+    });
   }, []);
 
   const openContextMenuHandler = useCallback(
@@ -144,7 +149,10 @@ export function TreePage() {
           </MenuItem>
           <MenuItem
             onClick={() =>
-              openModal({ type: ModalType.AddService, data: menuData?.data })
+              openModal({
+                type: ModalType.LinkServiceToFolder,
+                data: menuData?.data,
+              })
             }
           >
             Создать услугу
@@ -163,7 +171,7 @@ export function TreePage() {
         )}
       </section>
       <section className={styles.serviceContainer}>
-        {service && <Service />}
+        <Service />
       </section>
     </main>
   );

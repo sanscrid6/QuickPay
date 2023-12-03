@@ -1,3 +1,6 @@
+import { Category } from '../state/service/service';
+import { Wallet } from '../state/user';
+
 export type RegisterRequest = {
   email: string;
   password: string;
@@ -64,6 +67,8 @@ export type AddFolderRequest = {
 };
 
 export type AddServiceRequest = {
+  walletId: string;
+  categoryId: string;
   description: string;
   title: string;
   userId: string;
@@ -73,4 +78,18 @@ export type AddServiceRequest = {
 export type LinkServiceToFolderRequest = {
   serviceId: string;
   folderId: string;
+};
+
+export type GetServicesResponce = ServiceNode[];
+export type GetCategoriesResponce = Category[];
+export type GetWalletsResponce = Wallet[];
+
+export type CreateWalletRequest = {
+  title: string;
+  userId: string;
+};
+
+export type UpdateWalletRequest = {
+  id: string;
+  amount: number;
 };

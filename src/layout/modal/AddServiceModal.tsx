@@ -12,11 +12,12 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user } from '../../state/user';
+import { $user, $walletList } from '../../state/user';
 import { useState } from 'react';
 import { Input } from '../../state/tree/types';
 import InputForm from './components/InputForm/InputForm';
-import { addServiceFx } from '../../state/service/service';
+import { $categoryList, addServiceFx } from '../../state/service/service';
+import SelectDropdown from '../../components/select/SelectDropdown';
 
 const schema = z.object({
   description: z.string().min(10),
@@ -31,8 +32,12 @@ export function AddServiceModal() {
   const modal = useUnit($modal);
   const pending = useUnit(addServiceFx.pending);
   const user = useUnit($user);
+  const categories = useUnit($categoryList);
+  const wallets = useUnit($walletList);
 
   const [inputs, setInputs] = useState<FormInput[]>([]);
+  const [category, setCategory] = useState(categories[0]?.id ?? '');
+  const [wallet, setWallets] = useState(wallets[0]?.id ?? '');
 
   const {
     register,
@@ -75,18 +80,16 @@ export function AddServiceModal() {
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    const folder = z.object({ folderId: z.string() }).parse(modal?.data);
-    console.log(folder);
-
     await addServiceFx({
       ...data,
-      ...folder,
+      walletId: wallet,
+      categoryId: category,
       body: JSON.stringify(
         inputs.map((i) => ({ type: i.type, label: i.label, name: i.name })),
       ),
       userId: user!.id,
     });
-    closeModal();
+    closeHandler();
   }
 
   return (
@@ -117,6 +120,18 @@ export function AddServiceModal() {
             ]}
             register={register}
             errors={errors}
+          />
+          <SelectDropdown
+            name="Категория"
+            items={categories.map((c) => ({ value: c.id, label: c.title }))}
+            value={category}
+            setValue={setCategory}
+          />
+          <SelectDropdown
+            name="Кошелек"
+            items={wallets.map((c) => ({ value: c.id, label: c.title }))}
+            value={wallet}
+            setValue={setWallets}
           />
 
           {inputs.map(({ label, type, name, id }) => (

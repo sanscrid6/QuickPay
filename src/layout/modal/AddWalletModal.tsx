@@ -12,16 +12,15 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user } from '../../state/user';
-import { addFolderFx } from '../../state/tree/tree';
+import { $user, createWalletFx } from '../../state/user';
 
 const schema = z.object({
   title: z.string().min(3),
 });
 
-export function AddFolderModal() {
+export function AddWalletModal() {
   const modal = useUnit($modal);
-  const pending = useUnit(addFolderFx.pending);
+  const pending = useUnit(createWalletFx.pending);
   const user = useUnit($user);
 
   const {
@@ -39,23 +38,20 @@ export function AddFolderModal() {
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    const folder = z.object({ folderId: z.string() }).parse(modal?.data);
-
-    await addFolderFx({
+    await createWalletFx({
       ...data,
-      ...folder,
       userId: user!.id,
     });
     closeHandler();
   }
 
   return (
-    <Dialog open={modal?.type === ModalType.AddFolder} onClose={closeHandler}>
+    <Dialog open={modal?.type === ModalType.AddWallet} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Добавить попку</DialogTitle>
+        <DialogTitle>Добавить кошелек</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Введите данные, чтобы добавить папку
+            Введите данные, чтобы добавить кошелек
           </DialogContentText>
 
           <FormBuilder

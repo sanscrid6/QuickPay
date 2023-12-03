@@ -8,34 +8,39 @@ import {
   AddServiceRequest,
   LinkServiceToFolderRequest,
   LoginByCodeRequest,
+  GetServicesResponce,
+  GetCategoriesResponce,
+  GetWalletsResponce,
+  CreateWalletRequest,
+  UpdateWalletRequest,
 } from './types';
 import { request } from './utils';
 
-export async function register(data: RegisterRequest) {
+export async function register(req: RegisterRequest) {
   const res = await request({
     method: 'POST',
     url: '/identity/signup',
-    body: data,
+    body: req,
   });
 
   return res;
 }
 
-export async function login(data: LoginRequest) {
+export async function login(req: LoginRequest) {
   const res = await request({
     method: 'POST',
     url: '/identity/signin1',
-    params: data,
+    params: req,
   });
 
   return res!;
 }
 
-export async function loginByCode(data: LoginByCodeRequest) {
+export async function loginByCode(req: LoginByCodeRequest) {
   const res = await request<LoginResponse>({
     method: 'POST',
     url: '/identity/signin2',
-    params: data,
+    params: req,
   });
 
   return res!;
@@ -53,14 +58,14 @@ export async function getUser(id: string) {
 export async function getTree() {
   return request<TreeResponse>({
     method: 'GET',
-    url: '/Folders',
+    url: '/folders',
   });
 }
 
 export async function addFolder(req: AddFolderRequest) {
   return request({
     method: 'POST',
-    url: '/Folders',
+    url: '/folders',
     body: req,
   });
 }
@@ -76,14 +81,51 @@ export async function addService(req: AddServiceRequest) {
 export async function linkServiceToFolder(req: LinkServiceToFolderRequest) {
   return request({
     method: 'POST',
-    url: '/folderServices',
+    url: '/folder-services',
     body: req,
   });
 }
 
 export async function getAllServices() {
-  return request({
+  return request<GetServicesResponce>({
     method: 'GET',
-    url: '/folderServices',
+    url: '/services',
+  });
+}
+
+export async function getAllCategories() {
+  return request<GetCategoriesResponce>({
+    method: 'GET',
+    url: '/categories',
+  });
+}
+
+export async function getAllWallets() {
+  return request<GetWalletsResponce>({
+    method: 'GET',
+    url: '/wallets',
+  });
+}
+
+export async function createWallet(req: CreateWalletRequest) {
+  return request({
+    method: 'POST',
+    url: '/wallets',
+    body: req,
+  });
+}
+
+export async function updateWallet(req: UpdateWalletRequest) {
+  return request({
+    method: 'PUT',
+    url: '/wallets',
+    body: req,
+  });
+}
+
+export async function deleteWallet(id: string) {
+  return request({
+    method: 'DELETE',
+    url: `/wallets/${id}`,
   });
 }

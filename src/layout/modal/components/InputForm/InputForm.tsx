@@ -1,16 +1,8 @@
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-} from '@mui/material';
-import { useCallback } from 'react';
-import { PickDeep, ValueOf } from 'type-fest';
+import { TextField } from '@mui/material';
 import { Input } from '../../../../state/tree/types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './input-form.module.css';
+import SelectDropdown from '../../../../components/select/SelectDropdown';
 
 const types = [
   {
@@ -27,8 +19,6 @@ const types = [
   },
 ];
 
-type InputType = ValueOf<PickDeep<(typeof types)[number], 'value'>>;
-
 type InputFormProps = Input & {
   deleteInput: () => void;
   changeInput: (data: Partial<Input>) => void;
@@ -42,13 +32,6 @@ function InputForm({
 
   changeInput,
 }: InputFormProps) {
-  const changeTypeHandler = useCallback(
-    (event: SelectChangeEvent<'number' | 'text' | 'date'>) => {
-      changeInput({ type: event.target.value as InputType });
-    },
-    [changeInput],
-  );
-
   return (
     <div className={styles.container}>
       <TextField
@@ -68,21 +51,11 @@ function InputForm({
         onChange={(e) => changeInput({ name: e.target.value })}
       />
       <div className={styles.select}>
-        <FormControl fullWidth variant="standard">
-          <InputLabel id="demo-simple-select-label">Тип поля</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            value={type}
-            label="Age"
-            onChange={changeTypeHandler}
-          >
-            {types.map(({ label, value }) => (
-              <MenuItem value={value} key={value}>
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <SelectDropdown
+          items={types}
+          value={type}
+          setValue={(t) => changeInput({ type: t })}
+        />
       </div>
 
       <DeleteIcon onClick={deleteInput} className={styles.icon} />

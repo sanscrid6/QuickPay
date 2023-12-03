@@ -9,6 +9,9 @@ import { LogInModal } from './layout/modal/LogInModal';
 import { getUserFx } from './state/user';
 import { AddFolderModal } from './layout/modal/AddFolderModal';
 import { AddServiceModal } from './layout/modal/AddServiceModal';
+import { AddMoneyModal } from './layout/modal/AddMoneyModal';
+import { AddWalletModal } from './layout/modal/AddWalletModal';
+import { LinkServiceToFolderModal } from './layout/modal/LinkServiceToFolder';
 
 const theme = createTheme();
 
@@ -27,6 +30,9 @@ function App() {
       <LogInModal />
       <AddFolderModal />
       <AddServiceModal />
+      <AddMoneyModal />
+      <AddWalletModal />
+      <LinkServiceToFolderModal />
       <div style={{ height: `calc(100% - ${height}px)` }}>
         <Router />
       </div>

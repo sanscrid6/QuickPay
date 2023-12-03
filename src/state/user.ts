@@ -1,5 +1,14 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { getUser, login, loginByCode, register } from '../api/backend';
+import {
+  createWallet,
+  deleteWallet,
+  getAllWallets,
+  getUser,
+  login,
+  loginByCode,
+  register,
+  updateWallet,
+} from '../api/backend';
 
 export type User = {
   id: string;
@@ -8,14 +17,22 @@ export type User = {
   birthDate: string;
 };
 
-// const mockUser = {
-//   id: 'qq',
-//   isAdmin: false,
-// };
+export type Wallet = {
+  id: string;
+  title: string;
+  amount: number;
+  isMain: boolean;
+};
 
 export const $user = createStore<User | null>(null);
+export const $walletList = createStore<Wallet[]>([]);
 
 export const setUser = createEvent<User>();
+
+export const updateWalletFx = createEffect(updateWallet);
+export const deleteWalletFx = createEffect(deleteWallet);
+export const createWalletFx = createEffect(createWallet);
+export const getWalletListFx = createEffect(getAllWallets);
 
 export const loginFx = createEffect(login);
 export const loginByCodeFx = createEffect(loginByCode);
@@ -23,6 +40,32 @@ export const registerFx = createEffect(register);
 export const getUserFx = createEffect(getUser);
 
 export const logOut = createEvent();
+
+loginByCodeFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('userId', userId);
+});
+
+sample({
+  clock: $user.updates,
+  target: getWalletListFx,
+});
+
+sample({
+  clock: getWalletListFx.doneData,
+  target: $walletList,
+});
+
+sample({
+  clock: updateWalletFx.doneData,
+  target: getWalletListFx,
+});
+
+sample({
+  clock: createWalletFx.doneData,
+  target: getWalletListFx,
+});
 
 sample({
   clock: logOut,
@@ -39,12 +82,6 @@ sample({
 sample({
   clock: setUser,
   target: $user,
-});
-
-loginByCodeFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
-  localStorage.setItem('accessToken', accessToken);
-  localStorage.setItem('refreshToken', refreshToken);
-  localStorage.setItem('userId', userId);
 });
 
 sample({

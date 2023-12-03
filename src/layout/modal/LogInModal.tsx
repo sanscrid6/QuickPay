@@ -35,7 +35,6 @@ type Step =
     };
 
 export function LogInModal() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [step, setStep] = useState<Step>({
     type: 'CREDENTIALS',
     schema: schemaCredentials,

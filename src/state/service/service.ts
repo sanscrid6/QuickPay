@@ -1,22 +1,49 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { ServiceNode } from '../tree/types';
-import { logOut } from '../user';
-import { addService, getAllServices } from '../../api/backend';
+import { $user, logOut } from '../user';
+import {
+  addService,
+  getAllCategories,
+  getAllServices,
+} from '../../api/backend';
 
 type Service = ServiceNode;
+export type Category = {
+  id: string;
+  color: string;
+  title: string;
+  description: string;
+};
 
+export const $categoryList = createStore<Category[]>([]);
 export const $service = createStore<Service | null>(null);
-export const setService = createEvent<Service | null>();
 export const $servicesList = createStore<Service[]>([]);
 
+export const setService = createEvent<Service | null>();
 export const getServiceListFx = createEffect(getAllServices);
+export const getCategoryListFx = createEffect(getAllCategories);
 
 export const addServiceFx = createEffect(addService);
 
-// sample({
-//   clock: getServiceListFx.doneData,
-//   target: $servicesList,
-// });
+sample({
+  clock: $user.updates,
+  target: getServiceListFx,
+});
+
+sample({
+  clock: getCategoryListFx.doneData,
+  target: $categoryList,
+});
+
+sample({
+  clock: $user.updates,
+  target: getCategoryListFx,
+});
+
+sample({
+  clock: getServiceListFx.doneData,
+  target: $servicesList,
+});
 
 sample({
   clock: addServiceFx.doneData,
