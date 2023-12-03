@@ -93,3 +93,11 @@ export type UpdateWalletRequest = {
   id: string;
   amount: number;
 };
+
+export type CreatePaymentRequest = {
+  userId: string;
+  amount: number;
+  serviceId: string;
+  dateTime: string;
+  walletId: string;
+};

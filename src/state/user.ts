@@ -9,6 +9,7 @@ import {
   register,
   updateWallet,
 } from '../api/backend';
+import { addToast } from './toast';
 
 export type User = {
   id: string;
@@ -45,6 +46,54 @@ loginByCodeFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('userId', userId);
+});
+
+sample({
+  clock: loginFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: updateWalletFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: updateWalletFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: createWalletFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: createWalletFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: loginByCodeFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
 });
 
 sample({

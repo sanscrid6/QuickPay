@@ -3,9 +3,11 @@ import { ServiceNode } from '../tree/types';
 import { $user, logOut } from '../user';
 import {
   addService,
+  createPayment,
   getAllCategories,
   getAllServices,
 } from '../../api/backend';
+import { addToast } from '../toast';
 
 type Service = ServiceNode;
 export type Category = {
@@ -24,6 +26,40 @@ export const getServiceListFx = createEffect(getAllServices);
 export const getCategoryListFx = createEffect(getAllCategories);
 
 export const addServiceFx = createEffect(addService);
+
+export const createPaymentFx = createEffect(createPayment);
+
+sample({
+  clock: createPaymentFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: createPaymentFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: addServiceFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: addServiceFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
 
 sample({
   clock: $user.updates,

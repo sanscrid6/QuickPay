@@ -12,6 +12,7 @@ import { AddServiceModal } from './layout/modal/AddServiceModal';
 import { AddMoneyModal } from './layout/modal/AddMoneyModal';
 import { AddWalletModal } from './layout/modal/AddWalletModal';
 import { LinkServiceToFolderModal } from './layout/modal/LinkServiceToFolder';
+import Toasts from './components/toasts/Toasts';
 
 const theme = createTheme();
 
@@ -33,7 +34,9 @@ function App() {
       <AddMoneyModal />
       <AddWalletModal />
       <LinkServiceToFolderModal />
-      <div style={{ height: `calc(100% - ${height}px)` }}>
+
+      <div style={{ height: `calc(100% - ${height}px)`, position: 'relative' }}>
+        <Toasts />
         <Router />
       </div>
     </ThemeProvider>

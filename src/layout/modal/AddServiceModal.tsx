@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { $user, $walletList } from '../../state/user';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../../state/tree/types';
 import InputForm from './components/InputForm/InputForm';
 import { $categoryList, addServiceFx } from '../../state/service/service';
@@ -37,7 +37,12 @@ export function AddServiceModal() {
 
   const [inputs, setInputs] = useState<FormInput[]>([]);
   const [category, setCategory] = useState(categories[0]?.id ?? '');
-  const [wallet, setWallets] = useState(wallets[0]?.id ?? '');
+  const [wallet, setWallet] = useState(wallets[0]?.id ?? '');
+
+  useEffect(() => {
+    setCategory(categories[0]?.id);
+    setWallet(wallets[0]?.id);
+  }, []);
 
   const {
     register,
@@ -131,7 +136,7 @@ export function AddServiceModal() {
             name="Кошелек"
             items={wallets.map((c) => ({ value: c.id, label: c.title }))}
             value={wallet}
-            setValue={setWallets}
+            setValue={setWallet}
           />
 
           {inputs.map(({ label, type, name, id }) => (

@@ -13,6 +13,7 @@ import {
   GetWalletsResponce,
   CreateWalletRequest,
   UpdateWalletRequest,
+  CreatePaymentRequest,
 } from './types';
 import { request } from './utils';
 
@@ -101,9 +102,11 @@ export async function getAllCategories() {
 }
 
 export async function getAllWallets() {
+  const user = localStorage.getItem('userId')!;
+
   return request<GetWalletsResponce>({
     method: 'GET',
-    url: '/wallets',
+    url: `/wallets/user-wallets/${user}`,
   });
 }
 
@@ -127,5 +130,13 @@ export async function deleteWallet(id: string) {
   return request({
     method: 'DELETE',
     url: `/wallets/${id}`,
+  });
+}
+
+export async function createPayment(req: CreatePaymentRequest) {
+  return request({
+    method: 'POST',
+    url: `/payments`,
+    body: req,
   });
 }

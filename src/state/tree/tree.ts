@@ -3,6 +3,7 @@ import { addFolder, getTree, linkServiceToFolder } from '../../api/backend';
 import { logOut } from '../user';
 import { search } from './functions';
 import { Tree } from './types';
+import { addToast } from '../toast';
 
 export const setTree = createEvent<Tree>();
 export const setTempTree = createEvent<Tree | null>();
@@ -21,6 +22,38 @@ export const $expanded = createStore<string[] | undefined>(undefined, {
 export const loadTreeFx = createEffect(getTree);
 export const addFolderFx = createEffect(addFolder);
 export const linkServiceToFolderFx = createEffect(linkServiceToFolder);
+
+sample({
+  clock: addFolderFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: linkServiceToFolderFx.doneData,
+  fn: () => {
+    return { type: 'SUCCESS' as const };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: addFolderFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
+
+sample({
+  clock: linkServiceToFolderFx.failData,
+  fn: (e) => {
+    return { type: 'ERROR' as const, text: e.message };
+  },
+  target: addToast,
+});
 
 sample({
   clock: linkServiceToFolderFx.doneData,

@@ -52,6 +52,7 @@ function InputForm({
       />
       <div className={styles.select}>
         <SelectDropdown
+          name="Тип данных"
           items={types}
           value={type}
           setValue={(t) => changeInput({ type: t })}
