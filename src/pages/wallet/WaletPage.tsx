@@ -1,8 +1,8 @@
 import { useUnit } from 'effector-react';
 import WalletList from './components/wallet-list/WalletList';
-import { $walletList, getWalletListFx } from '../../state/user';
+import { $walletList, getWalletListFx } from '../../state/user/user';
 import { Button } from '@mui/material';
-import { ModalType, openModal } from '../../state/modal';
+import { ModalType, openModal } from '../../state/modal/modal';
 import styles from './wallet.module.css';
 import { useEffect } from 'react';
 

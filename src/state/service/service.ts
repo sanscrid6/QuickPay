@@ -1,13 +1,13 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { ServiceNode } from '../tree/types';
-import { $user, logOut } from '../user';
+import { $user, logOut } from '../user/user';
 import {
   addService,
   createPayment,
   getAllCategories,
   getAllServices,
 } from '../../api/backend';
-import { addToast } from '../toast';
+import { addToast } from '../toast/toast';
 
 type Service = ServiceNode;
 export type Category = {

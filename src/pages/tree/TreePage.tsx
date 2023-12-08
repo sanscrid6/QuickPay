@@ -15,7 +15,7 @@ import { Node } from '../../state/tree/types';
 import SearchIcon from '@mui/icons-material/Search';
 import Service from '../../components/service/Service';
 import styles from './tree-page.module.css';
-import { ModalType, closeModal, openModal } from '../../state/modal';
+import { ModalType, closeModal, openModal } from '../../state/modal/modal';
 
 function RenderText({ text }: { text: string }) {
   const search = useUnit($search);

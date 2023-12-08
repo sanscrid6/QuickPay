@@ -7,7 +7,7 @@ import {
 } from '../../state/service/service';
 import { useEffect } from 'react';
 import { Button } from '@mui/material';
-import { ModalType, openModal } from '../../state/modal';
+import { ModalType, openModal } from '../../state/modal/modal';
 import styles from './service.module.css';
 import Service from '../../components/service/Service';
 

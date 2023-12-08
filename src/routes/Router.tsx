@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { routes } from './routes';
 import { useUnit } from 'effector-react';
-import { $user } from '../state/user';
+import { $user } from '../state/user/user';
 
 export function Router() {
   const user = useUnit($user);

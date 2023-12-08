@@ -1,5 +1,7 @@
+import { Payment } from '../state/history/history';
 import { Category } from '../state/service/service';
-import { Wallet } from '../state/user';
+import { FolderNode, ServiceNode } from '../state/tree/types';
+import { Wallet } from '../state/user/user';
 
 export type RegisterRequest = {
   email: string;
@@ -41,21 +43,6 @@ export type UserResponse = {
 export type Input = {
   label: string;
   type: 'text' | 'data' | 'number';
-};
-
-export type ServiceNode = {
-  body: string;
-  description: string;
-  id: string;
-  title: string;
-  userId: string;
-};
-
-export type FolderNode = {
-  folders?: FolderNode[];
-  id: string;
-  title: string;
-  services: ServiceNode[];
 };
 
 export type TreeResponse = FolderNode[];
@@ -101,3 +88,5 @@ export type CreatePaymentRequest = {
   dateTime: string;
   walletId: string;
 };
+
+export type CreatePaymentResponce = Payment[];

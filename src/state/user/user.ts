@@ -8,8 +8,8 @@ import {
   loginByCode,
   register,
   updateWallet,
-} from '../api/backend';
-import { addToast } from './toast';
+} from '../../api/backend';
+import { addToast } from '../toast/toast';
 
 export type User = {
   id: string;

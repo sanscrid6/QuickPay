@@ -7,6 +7,7 @@ export type Input = {
 export type ServiceNode = {
   body: string;
   description: string;
+  serviceId: string;
   id: string;
   title: string;
   userId: string;

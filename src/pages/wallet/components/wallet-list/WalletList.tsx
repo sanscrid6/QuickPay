@@ -1,6 +1,6 @@
 import { List } from '@mui/material';
 import WalletCard from '../wallet-card/WalletCard';
-import { Wallet } from '../../../../state/user';
+import { Wallet } from '../../../../state/user/user';
 
 type WalletListProps = {
   items: Wallet[];

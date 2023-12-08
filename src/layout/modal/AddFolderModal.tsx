@@ -6,13 +6,13 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { $modal, ModalType, closeModal } from '../../state/modal';
+import { $modal, ModalType, closeModal } from '../../state/modal/modal';
 import { useUnit } from 'effector-react';
 import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user } from '../../state/user';
+import { $user } from '../../state/user/user';
 import { addFolderFx } from '../../state/tree/tree';
 
 const schema = z.object({

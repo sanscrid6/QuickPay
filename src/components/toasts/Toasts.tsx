@@ -1,5 +1,5 @@
 import { Alert, Snackbar } from '@mui/material';
-import { $activeToast, popToast } from '../../state/toast';
+import { $activeToast, popToast } from '../../state/toast/toast';
 import { useUnit } from 'effector-react';
 
 function Toasts() {

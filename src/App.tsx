@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useHeight } from './hooks/useHeight';
 import { SignInModal } from './layout/modal/SignInModal';
 import { LogInModal } from './layout/modal/LogInModal';
-import { getUserFx } from './state/user';
+import { getUserFx } from './state/user/user';
 import { AddFolderModal } from './layout/modal/AddFolderModal';
 import { AddServiceModal } from './layout/modal/AddServiceModal';
 import { AddMoneyModal } from './layout/modal/AddMoneyModal';

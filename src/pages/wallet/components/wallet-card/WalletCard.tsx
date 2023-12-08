@@ -1,6 +1,6 @@
 import { Button, ListItem, ListItemText } from '@mui/material';
-import { Wallet, deleteWalletFx } from '../../../../state/user';
-import { ModalType, openModal } from '../../../../state/modal';
+import { Wallet, deleteWalletFx } from '../../../../state/user/user';
+import { ModalType, openModal } from '../../../../state/modal/modal';
 
 type WalletCardProps = Wallet;
 

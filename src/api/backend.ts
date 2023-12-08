@@ -14,6 +14,7 @@ import {
   CreateWalletRequest,
   UpdateWalletRequest,
   CreatePaymentRequest,
+  CreatePaymentResponce,
 } from './types';
 import { request } from './utils';
 
@@ -139,4 +140,15 @@ export async function createPayment(req: CreatePaymentRequest) {
     url: `/payments`,
     body: req,
   });
+}
+
+export async function getPayments() {
+  const user = localStorage.getItem('userId')!;
+
+  const res = await request<CreatePaymentResponce>({
+    method: 'GET',
+    url: `/payments`,
+  });
+
+  return res.filter((p) => p.userId === user);
 }

@@ -1,10 +1,10 @@
 import { routes } from '../../routes/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
-import { $user, logOut } from '../../state/user';
+import { $user, logOut } from '../../state/user/user';
 import { useUnit } from 'effector-react';
 import { forwardRef } from 'react';
-import { ModalType, openModal } from '../../state/modal';
+import { ModalType, openModal } from '../../state/modal/modal';
 
 import styles from './header.module.css';
 

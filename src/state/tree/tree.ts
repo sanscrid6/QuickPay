@@ -1,9 +1,9 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { addFolder, getTree, linkServiceToFolder } from '../../api/backend';
-import { logOut } from '../user';
+import { logOut } from '../user/user';
 import { search } from './functions';
 import { Tree } from './types';
-import { addToast } from '../toast';
+import { addToast } from '../toast/toast';
 
 export const setTree = createEvent<Tree>();
 export const setTempTree = createEvent<Tree | null>();

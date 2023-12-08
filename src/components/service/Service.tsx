@@ -12,9 +12,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './service.module.css';
 import { Input } from '../../state/tree/types';
 import SelectDropdown from '../select/SelectDropdown';
-import { $user, $walletList } from '../../state/user';
+import { $user, $walletList } from '../../state/user/user';
 import { z } from 'zod';
-import { closeModal } from '../../state/modal';
+import { closeModal } from '../../state/modal/modal';
+import { addToast } from '../../state/toast/toast';
 
 const schema = z.object({
   amount: z.coerce.number().min(1),
@@ -25,7 +26,7 @@ function Service() {
   const wallets = useUnit($walletList);
   const user = useUnit($user);
 
-  const [wallet, setWallets] = useState(wallets[0]?.id ?? '');
+  const [wallet, setWallet] = useState(wallets[0]?.id ?? '');
 
   const {
     control,
@@ -54,6 +55,10 @@ function Service() {
     }
   }, [replace, service?.body]);
 
+  useEffect(() => {
+    setWallet(wallets[0]?.id);
+  }, [wallets]);
+
   function closeHandler() {
     setService(null);
   }
@@ -61,11 +66,17 @@ function Service() {
   async function submit(data: unknown) {
     const d = schema.parse(data);
 
+    if (wallets.find((w) => w.id === wallet)!.amount < d.amount) {
+      addToast({ type: 'ERROR', text: 'Недостаточно средств' });
+
+      return;
+    }
+
     await createPaymentFx({
       ...d,
       walletId: wallet,
       dateTime: new Date().toISOString(),
-      serviceId: service!.id,
+      serviceId: service!.serviceId,
       userId: user!.id,
     });
     reset();
@@ -104,14 +115,14 @@ function Service() {
               name="Кошелек"
               items={wallets.map((c) => ({ value: c.id, label: c.title }))}
               value={wallet}
-              setValue={setWallets}
+              setValue={setWallet}
             />
             <TextField
               {...register('amount')}
               margin="dense"
               label="Сумма"
               fullWidth
-              type="number"
+              type="string"
               variant="standard"
               error={!!errors['amount']?.message}
               helperText={errors['amount']?.message as never}

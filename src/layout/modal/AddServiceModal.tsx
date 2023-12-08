@@ -6,13 +6,13 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { $modal, ModalType, closeModal } from '../../state/modal';
+import { $modal, ModalType, closeModal } from '../../state/modal/modal';
 import { useUnit } from 'effector-react';
 import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user, $walletList } from '../../state/user';
+import { $user, $walletList } from '../../state/user/user';
 import { useEffect, useState } from 'react';
 import { Input } from '../../state/tree/types';
 import InputForm from './components/InputForm/InputForm';
@@ -42,7 +42,7 @@ export function AddServiceModal() {
   useEffect(() => {
     setCategory(categories[0]?.id);
     setWallet(wallets[0]?.id);
-  }, []);
+  }, [categories, wallets]);
 
   const {
     register,

@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { $modal, ModalType, closeModal } from '../../state/modal';
+import { $modal, ModalType, closeModal } from '../../state/modal/modal';
 import { useUnit } from 'effector-react';
 import { z } from 'zod';
 import { addFolderFx, linkServiceToFolderFx } from '../../state/tree/tree';
@@ -23,7 +23,7 @@ export function LinkServiceToFolderModal() {
 
   useEffect(() => {
     setSelectedService(services[0]?.id);
-  }, []);
+  }, [services]);
 
   function closeHandler() {
     closeModal();

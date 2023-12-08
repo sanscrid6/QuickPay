@@ -35,20 +35,24 @@ export async function requestWithCredentials<T>({
     },
   });
 
+  const text = await res.text();
+  let data = null;
+
+  if (!text) {
+    data = null as T;
+  } else {
+    data = JSON.parse(text) as T;
+  }
+
   if (!res.ok) {
     throw {
       code: res.status,
       statusText: res.statusText,
+      message: (data as { message: string }).message,
     } as RequestError;
   }
 
-  const text = await res.text();
-
-  if (!text) {
-    return null as T;
-  } else {
-    return JSON.parse(text) as T;
-  }
+  return data;
 }
 
 export async function refresh(data: RefreshTokenRequest) {
