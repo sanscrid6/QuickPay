@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { ServiceNode } from '../tree/types';
-import { $user, logOut } from '../user/user';
+import { $user, getWalletListFx, logOut } from '../user/user';
 import {
   addService,
   createPayment,
@@ -28,6 +28,11 @@ export const getCategoryListFx = createEffect(getAllCategories);
 export const addServiceFx = createEffect(addService);
 
 export const createPaymentFx = createEffect(createPayment);
+
+sample({
+  clock: createPaymentFx.doneData,
+  target: getWalletListFx,
+});
 
 sample({
   clock: createPaymentFx.failData,

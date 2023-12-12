@@ -3,7 +3,15 @@ import { Payment } from '../../../../state/history/history';
 
 type HistoryCardProps = Payment;
 
-function HistoryCard({ amount, service }: HistoryCardProps) {
+const formatter = Intl.DateTimeFormat('ru', {
+  day: '2-digit',
+  hour: '2-digit',
+  month: 'long',
+  year: 'numeric',
+  minute: '2-digit',
+});
+
+function HistoryCard({ amount, service, dateTime }: HistoryCardProps) {
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
@@ -18,7 +26,8 @@ function HistoryCard({ amount, service }: HistoryCardProps) {
             >
               {service.category.title}
             </Typography>{' '}
-            {`Сумма ${amount} BYN`}
+            <div>{`Сумма ${amount} BYN`}</div>
+            <div>{`${formatter.format(new Date(dateTime))}`}</div>
           </>
         }
       />

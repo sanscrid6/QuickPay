@@ -15,6 +15,9 @@ import {
   UpdateWalletRequest,
   CreatePaymentRequest,
   CreatePaymentResponce,
+  AddFavouriteRequest,
+  DeleteFavouriteRequest,
+  GetUserFavouritesResponce,
 } from './types';
 import { request } from './utils';
 
@@ -151,4 +154,26 @@ export async function getPayments() {
   });
 
   return res.filter((p) => p.userId === user);
+}
+
+export async function addFavourite(req: AddFavouriteRequest) {
+  return request({
+    method: 'POST',
+    url: `/user-favourites`,
+    body: req,
+  });
+}
+
+export async function deleteFavourite(req: DeleteFavouriteRequest) {
+  return request({
+    method: 'DELETE',
+    url: `/user-favourites/${req.id}`,
+  });
+}
+
+export async function getFavourites() {
+  return request<GetUserFavouritesResponce>({
+    method: 'GET',
+    url: `/user-favourites`,
+  });
 }

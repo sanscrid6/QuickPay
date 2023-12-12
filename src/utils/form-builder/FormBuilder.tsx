@@ -6,6 +6,7 @@ type FormField = {
   label?: string;
   type?: 'text' | 'email' | 'password' | 'number' | 'date';
   autoFocus?: boolean;
+  defaultValue?: string;
 };
 
 type FormBuilderProps<T extends Record<string, unknown>> = {
@@ -24,6 +25,7 @@ export function FormBuilder<T extends Record<string, unknown>>({
       {fields.map((f) => {
         return (
           <TextField
+            defaultValue={f.defaultValue}
             key={f.name}
             {...register(f.name as never)}
             autoFocus={f.autoFocus}

@@ -12,16 +12,32 @@ import { FormBuilder } from '../../utils/form-builder/FormBuilder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { $user, createWalletFx } from '../../state/user/user';
+import { $user, createWalletFx, updateWalletFx } from '../../state/user/user';
 
 const schema = z.object({
   title: z.string().min(3),
 });
 
+const propsSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('UPDATE'),
+    name: z.string(),
+    amount: z.number(),
+    id: z.string(),
+  }),
+  z.object({
+    type: z.literal('ADD'),
+  }),
+]);
+
 export function AddWalletModal() {
   const modal = useUnit($modal);
   const pending = useUnit(createWalletFx.pending);
   const user = useUnit($user);
+
+  console.log(modal?.data);
+
+  const props = propsSchema.parse(modal?.data);
 
   const {
     register,
@@ -38,20 +54,33 @@ export function AddWalletModal() {
   async function submit(data: z.infer<typeof schema>) {
     if (pending) return;
 
-    await createWalletFx({
-      ...data,
-      userId: user!.id,
-    });
+    if (props.type === 'ADD') {
+      await createWalletFx({
+        ...data,
+        userId: user!.id,
+      });
+    } else {
+      await updateWalletFx({
+        title: data.title,
+        amount: props.amount,
+        id: props.id,
+        userId: user!.id,
+      });
+    }
+
     closeHandler();
   }
 
   return (
     <Dialog open={modal?.type === ModalType.AddWallet} onClose={closeHandler}>
       <form onSubmit={handleSubmit(submit)}>
-        <DialogTitle>Добавить кошелек</DialogTitle>
+        <DialogTitle>
+          {props.type === 'ADD' ? 'Добавить' : 'Обновить'} кошелек
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Введите данные, чтобы добавить кошелек
+            Введите данные, чтобы{' '}
+            {props.type === 'ADD' ? 'добавить' : 'обновить'} кошелек
           </DialogContentText>
 
           <FormBuilder
@@ -60,6 +89,7 @@ export function AddWalletModal() {
                 name: 'title',
                 type: 'text',
                 label: 'Название',
+                defaultValue: props.type === 'UPDATE' ? props.name : undefined,
               },
             ]}
             register={register}

@@ -14,7 +14,7 @@ export function WalletPage() {
   }, []);
 
   function addWalletHandler() {
-    openModal({ type: ModalType.AddWallet });
+    openModal({ type: ModalType.AddWallet, data: { type: 'ADD' } });
   }
 
   return (

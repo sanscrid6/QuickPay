@@ -79,6 +79,8 @@ export type CreateWalletRequest = {
 export type UpdateWalletRequest = {
   id: string;
   amount: number;
+  title: string;
+  userId: string;
 };
 
 export type CreatePaymentRequest = {
@@ -90,3 +92,18 @@ export type CreatePaymentRequest = {
 };
 
 export type CreatePaymentResponce = Payment[];
+
+export type AddFavouriteRequest = {
+  serviceId: string;
+  userId: string;
+};
+
+export type DeleteFavouriteRequest = {
+  id: string;
+};
+
+export type GetUserFavouritesResponce = {
+  id: string;
+  userId: string;
+  serviceId: string;
+}[];

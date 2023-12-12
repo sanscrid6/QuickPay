@@ -13,6 +13,13 @@ function WalletCard({ title, amount, id, isMain }: WalletCardProps) {
     openModal({ type: ModalType.AddMoney, data: { id } });
   }
 
+  function updateWalletHandler() {
+    openModal({
+      type: ModalType.AddWallet,
+      data: { type: 'UPDATE', name: title, id, amount },
+    });
+  }
+
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
@@ -21,6 +28,7 @@ function WalletCard({ title, amount, id, isMain }: WalletCardProps) {
       />
       {!isMain && <Button onClick={deleteWallethandler}>Удалить</Button>}
       <Button onClick={addMoneyHandler}>Пополнить</Button>
+      <Button onClick={updateWalletHandler}>Изменить</Button>
     </ListItem>
   );
 }

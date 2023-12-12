@@ -1,8 +1,11 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import {
+  addFavourite,
   createWallet,
+  deleteFavourite,
   deleteWallet,
   getAllWallets,
+  getFavourites,
   getUser,
   login,
   loginByCode,
@@ -27,6 +30,7 @@ export type Wallet = {
 
 export const $user = createStore<User | null>(null);
 export const $walletList = createStore<Wallet[]>([]);
+export const $favourites = createStore<{ serviceId: string; id: string }[]>([]);
 
 export const setUser = createEvent<User>();
 
@@ -34,6 +38,10 @@ export const updateWalletFx = createEffect(updateWallet);
 export const deleteWalletFx = createEffect(deleteWallet);
 export const createWalletFx = createEffect(createWallet);
 export const getWalletListFx = createEffect(getAllWallets);
+
+export const deleteFavouriteFx = createEffect(deleteFavourite);
+export const createFavouriteFx = createEffect(addFavourite);
+export const getFavouritesFx = createEffect(getFavourites);
 
 export const loginFx = createEffect(login);
 export const loginByCodeFx = createEffect(loginByCode);
@@ -46,6 +54,26 @@ loginByCodeFx.doneData.watch(({ accessToken, refreshToken, userId }) => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('userId', userId);
+});
+
+sample({
+  clock: getFavouritesFx.doneData,
+  fn: (arr) => {
+    const user = localStorage.getItem('userId')!;
+
+    return arr.filter((item) => item.userId === user);
+  },
+  target: $favourites,
+});
+
+sample({
+  clock: deleteFavouriteFx.doneData,
+  target: getFavouritesFx,
+});
+
+sample({
+  clock: createFavouriteFx.doneData,
+  target: getFavouritesFx,
 });
 
 sample({

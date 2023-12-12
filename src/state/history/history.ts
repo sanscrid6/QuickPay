@@ -1,10 +1,6 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { getPayments } from '../../api/backend';
-import {
-  Category,
-  createPaymentFx,
-  getCategoryListFx,
-} from '../service/service';
+import { Category, createPaymentFx } from '../service/service';
 import { Service } from '../../pages/services/types';
 
 type S = Service & {
@@ -24,7 +20,7 @@ export const $paymentList = createStore<Payment[]>([]);
 export const getPaymentsFx = createEffect(getPayments);
 
 export const $filteredPayments = createStore<Payment[]>([]);
-export const $filter = createStore<string>('');
+export const $filter = createStore<string>('all');
 export const setFilter = createEvent<string>();
 
 sample({
@@ -34,14 +30,6 @@ sample({
 
 sample({
   clock: setFilter,
-  target: $filter,
-});
-
-sample({
-  clock: getCategoryListFx.doneData,
-  fn: (data) => {
-    return data[0].id;
-  },
   target: $filter,
 });
 
@@ -67,7 +55,13 @@ sample({
     paymentList: $paymentList,
   },
   fn: ({ f, paymentList }) => {
-    return paymentList.filter((p) => p.service.category.id === f);
+    return paymentList
+      .filter((p) => {
+        if (f === 'all') return true;
+
+        return p.service.category.id === f;
+      })
+      .reverse();
   },
   target: $filteredPayments,
 });

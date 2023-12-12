@@ -10,12 +10,14 @@ import { Button } from '@mui/material';
 import { ModalType, openModal } from '../../state/modal/modal';
 import styles from './service.module.css';
 import Service from '../../components/service/Service';
+import { getFavouritesFx } from '../../state/user/user';
 
 function ServicesPage() {
   const services = useUnit($servicesList);
 
   useEffect(() => {
     getServiceListFx();
+    getFavouritesFx();
   }, []);
 
   useEffect(() => {

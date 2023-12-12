@@ -25,7 +25,10 @@ function HistoryPage() {
   return (
     <div className={styles.container}>
       <SelectDropdown
-        items={categories.map((c) => ({ value: c.id, label: c.title }))}
+        items={[
+          { value: 'all', label: 'Все категории' },
+          ...categories.map((c) => ({ value: c.id, label: c.title })),
+        ]}
         name="Категория"
         value={filter}
         setValue={setFilter}

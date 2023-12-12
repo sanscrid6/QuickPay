@@ -13,12 +13,15 @@ import { AddMoneyModal } from './layout/modal/AddMoneyModal';
 import { AddWalletModal } from './layout/modal/AddWalletModal';
 import { LinkServiceToFolderModal } from './layout/modal/LinkServiceToFolder';
 import Toasts from './components/toasts/Toasts';
+import { useUnit } from 'effector-react';
+import { $modal, ModalType } from './state/modal/modal';
 
 const theme = createTheme();
 
 function App() {
   const ref = useRef<HTMLElement | null>(null);
   const height = useHeight(ref);
+  const modal = useUnit($modal);
 
   useEffect(() => {
     getUserFx(localStorage.getItem('userId')!);
@@ -32,7 +35,7 @@ function App() {
       <AddFolderModal />
       <AddServiceModal />
       <AddMoneyModal />
-      <AddWalletModal />
+      {modal?.type === ModalType.AddWallet && <AddWalletModal />}
       <LinkServiceToFolderModal />
 
       <div style={{ height: `calc(100% - ${height}px)`, position: 'relative' }}>
