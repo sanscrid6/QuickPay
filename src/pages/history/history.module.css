@@ -5,3 +5,10 @@
     flex-direction: column;
     padding: 1rem 20%;
 }
+
+.date {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+}

@@ -9,6 +9,7 @@ export type RegisterRequest = {
   firstName: string;
   lastName: string;
   birthDate: string;
+  phoneNumber: string;
 };
 
 export type LoginRequest = {

@@ -18,6 +18,7 @@ export type FolderNode = {
   id: string;
   title: string;
   services?: ServiceNode[];
+  userId: string;
 };
 
 export type Tree = FolderNode[];

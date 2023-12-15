@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { ServiceNode } from '../tree/types';
-import { $user, getWalletListFx, logOut } from '../user/user';
+import { $favourites, $user, getWalletListFx, logOut } from '../user/user';
 import {
   addService,
   createPayment,
@@ -28,6 +28,24 @@ export const getCategoryListFx = createEffect(getAllCategories);
 export const addServiceFx = createEffect(addService);
 
 export const createPaymentFx = createEffect(createPayment);
+
+sample({
+  clock: $favourites.updates,
+  source: {
+    services: $servicesList,
+    favourites: $favourites,
+  },
+  fn: ({ services, favourites }) => {
+    const ids = favourites.map((f) => f.serviceId);
+    const start = services.filter((s) => ids.includes(s.id));
+    const end = services.filter((s) => !ids.includes(s.id));
+
+    const result = [...start, ...end];
+
+    return result;
+  },
+  target: $servicesList,
+});
 
 sample({
   clock: createPaymentFx.doneData,
@@ -83,6 +101,15 @@ sample({
 
 sample({
   clock: getServiceListFx.doneData,
+  fn: (services) => {
+    const ids = $favourites.getState().map((f) => f.serviceId);
+    const start = services.filter((s) => ids.includes(s.id));
+    const end = services.filter((s) => !ids.includes(s.id));
+
+    const result = [...start, ...end];
+
+    return result;
+  },
   target: $servicesList,
 });
 

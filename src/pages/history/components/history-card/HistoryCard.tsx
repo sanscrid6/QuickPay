@@ -17,7 +17,7 @@ function HistoryCard({ amount, service, dateTime }: HistoryCardProps) {
       <ListItemText
         primary={service.title}
         secondary={
-          <>
+          <span style={{ display: 'flex', flexDirection: 'column' }}>
             <Typography
               sx={{ display: 'inline' }}
               component="span"
@@ -26,9 +26,14 @@ function HistoryCard({ amount, service, dateTime }: HistoryCardProps) {
             >
               {service.category.title}
             </Typography>{' '}
-            <div>{`Сумма ${amount} BYN`}</div>
-            <div>{`${formatter.format(new Date(dateTime))}`}</div>
-          </>
+            <span>{`Сумма ${amount} BYN`}</span>
+            <span>{`${formatter.format(
+              new Date(
+                new Date(dateTime).getTime() +
+                  new Date().getTimezoneOffset() * -60_000,
+              ),
+            )}`}</span>
+          </span>
         }
       />
     </ListItem>

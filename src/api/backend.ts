@@ -61,10 +61,14 @@ export async function getUser(id: string) {
 }
 
 export async function getTree() {
-  return request<TreeResponse>({
+  const tree = await request<TreeResponse>({
     method: 'GET',
     url: '/folders',
   });
+
+  const user = localStorage.getItem('userId')!;
+
+  return tree.filter((node) => node.userId === user);
 }
 
 export async function addFolder(req: AddFolderRequest) {

@@ -22,6 +22,7 @@ const schema = z
     firstName: z.string().min(1),
     lastName: z.string().min(1),
     birthDate: z.string(),
+    phoneNumber: z.string().regex(/^\+375(17|29|33|44)\d{7}$/),
   })
   .superRefine((val, ctx) => {
     if (val.password !== val.passwordAgain) {
@@ -32,7 +33,10 @@ const schema = z
       });
     }
 
-    if (new Date(val.birthDate).getTime() > Date.now()) {
+    if (
+      Date.now() - new Date(val.birthDate).getTime() <
+      365 * 18 * 24 * 3600 * 1000
+    ) {
       ctx.addIssue({
         path: ['birthDate'],
         code: z.ZodIssueCode.custom,
@@ -58,6 +62,9 @@ export function SignInModal() {
   }
 
   async function submit(data: z.infer<typeof schema>) {
+    console.log(data.birthDate);
+
+    return;
     if (pending) return;
 
     await registerFx(data);
@@ -77,6 +84,7 @@ export function SignInModal() {
                 name: 'email',
                 type: 'email',
                 label: 'Эл. почта',
+                autoFocus: true,
               },
               {
                 name: 'password',
@@ -101,7 +109,11 @@ export function SignInModal() {
               {
                 name: 'birthDate',
                 type: 'date',
-                autoFocus: true,
+              },
+              {
+                name: 'phoneNumber',
+                type: 'text',
+                label: 'Номер телефона',
               },
             ]}
             register={register}
